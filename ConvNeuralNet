@@ -49,8 +49,6 @@ for game_id, game_data in tracking1_with_plays.groupby('gameId'):
             identifiers.append((game_id, play_id, frame_id))
 train_x = np.array(train_x)
 
-train_x = np.array(train_x)
-
 train_y = []
 for game_id, game_data in tracking1_with_plays.groupby('gameId'):
     for play_id, play_data in game_data.groupby('playId'):
