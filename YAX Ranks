@@ -1,0 +1,11 @@
+import pandas as pd
+
+df = pd.read_csv('week1_yardsrem.csv')
+
+df['yax'] = df['yards_remaining'] - df['predicted_yards_remaining']
+offense_ranks = df[df['is_on_offense']].groupby('club')['yax'].mean().reset_index().sort_values(by='yax', ascending = False)
+defense_ranks = df[df['is_on_defense']].groupby('club')['yax'].mean().reset_index().sort_values(by='yax')
+df_filtered = df[df['is_ballcarrier'] == True]
+names = df_filtered[['ballCarrierId', 'displayName']].drop_duplicates()
+avg_play_yax_ball_carrier = df.groupby('ballCarrierId')['yax'].mean().reset_index().sort_values(by='yax')
+player_ranks = pd.merge(avg_play_yax_ball_carrier, names, on='ballCarrierId')
