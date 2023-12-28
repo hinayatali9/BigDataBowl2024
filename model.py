@@ -4,6 +4,10 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, TensorDataset
 
 
+PREPROCESS_STD = 6.8557
+PREPROCESS_MEAN = -0.1061
+
+
 class SqueezeExcitation(nn.Module):
     def __init__(self, in_channels, reduction_ratio=16):
         super(SqueezeExcitation, self).__init__()
@@ -33,7 +37,7 @@ class MatchupAttention(nn.Module):
         self.matchups = nn.Linear(10, 10)
     def forward(self, x):
         pooled = self.pooled(x)
-        x_compress = self.compressed(pooled).squeeze(1)
+        x_compress = self.compress(pooled).squeeze(1)
         x_out = self.matchups(x_compress).unsqueeze(1)
         attention = F.sigmoid(x_out)
 
@@ -76,7 +80,6 @@ class ExpectedYardsModel(nn.Module):
 
     def forward(self, x):
         # Conv2D and Activation layers
-        #x = self.ma_0(x)
         x = F.relu(self.conv2d_1(x))
         x = self.se_1(x)
         x = self.ma_1(x)
@@ -89,7 +92,6 @@ class ExpectedYardsModel(nn.Module):
         x = self.se_3(x)
         x = self.ma_3(x)
         x = self.dropout(x)
-        
         
         # MaxPooling2D and AvgPool2D layers
         xmax = F.max_pool2d(x, (1, 10)) * 0.3
@@ -129,7 +131,7 @@ class ExpectedYardsModel(nn.Module):
         return x
 
 
-def load_model():
+def load_expected_yards_model():
     model = ExpectedYardsModel()
     model.load_state_dict(torch.load('./model_e10.pt'))
     return model
