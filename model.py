@@ -133,9 +133,9 @@ class ExpectedYardsModel(nn.Module):
 
 def load_expected_yards_model():
     model = ExpectedYardsModel()
-    model.load_state_dict(torch.load('./model_e10.pt'))
+    model.load_state_dict(torch.load('./model_e10_new.pt'))
     return model
 
 
 def get_input_normalizations():
-    return {'std': 6.8557, 'mean': -0.1061}
+    return {'std': 6.8475, 'mean': -0.2011}
