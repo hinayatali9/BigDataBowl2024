@@ -66,43 +66,45 @@ def compute_feature_df(tracking_with_plays):
                     frame['relative_s_x'] = frame['ball_carrier_s_x'] - frame['s_x']
                     frame['relative_s_y'] = frame['ball_carrier_s_y'] - frame['s_y']
                     frame['ball_carrier_x'] = frame.loc[frame['nflId'] == ball_carrier_id, 'x'].iloc[0]
-                    frame['relative_x'] = frame['ball_carrier_x'] - frame['x']
                     frame['ball_carrier_y'] = frame.loc[frame['nflId'] == ball_carrier_id, 'y'].iloc[0]
                     frame['relative_y'] = frame['ball_carrier_y'] - frame['y']
                     frame['yards_remaining'] = ball_end_x - frame['ball_carrier_x']
                     info_frames.append(frame)
             except:
                 print('error')
-                
+
+
     info = pd.concat(info_frames, ignore_index=True)
     # info.to_csv('info.csv', index=False)
     return info
 
-def create_feature_tensor(feature_df):
+def create_feature_tensor(tracking_with_plays):
     """
     Convert the input frame_df to a 4D tensor.
         - The first dimension is the frame
         - The second dimension is the index of the current player
         - The third dimension is the index of the relative player
     """
-    tensor_shape = (feature_df.groupby(['gameId', 'playId', 'frameId']).ngroups, 10, 11, 10)
+    tensor_shape = (tracking_with_plays.groupby(['gameId', 'playId', 'frameId']).ngroups, 10, 11, 10)
     input_tensor = np.zeros(tensor_shape)
-    target_tensor = np.zeros((feature_df.groupby(['gameId', 'playId', 'frameId']).ngroups))
-    reference_tensor = np.zeros((feature_df.groupby(['gameId', 'playId', 'frameId']).ngroups, 3))
+    target_tensor = np.zeros((tracking_with_plays.groupby(['gameId', 'playId', 'frameId']).ngroups))
+    reference_tensor = np.zeros((tracking_with_plays.groupby(['gameId', 'playId', 'frameId']).ngroups, 3))
+    positional_reference_tensor = np.zeros((tracking_with_plays.groupby(['gameId', 'playId', 'frameId']).ngroups, 11, 10, 5))
     cur_count = 0
-    for gid in tqdm(feature_df['gameId'].unique()):
-        game = feature_df[feature_df['gameId'] == gid]
-        for play_id, play_group in game.groupby('playId'):
+    for game_id, game_group in tqdm(tracking_with_plays.groupby('gameId')):
+        for play_id, play_group in game_group.groupby('playId'):
+            max_frame = play_group['frameId'].max()
+            ball_end_x = play_group.loc[(play_group['frameId'] == max_frame) & (play_group['is_ballcarrier']), 'x']
             for frame_id, frame_group in play_group.groupby('frameId'):
-                offense_players = frame_group[(frame_group['is_on_offense']) & (~frame_group['is_ball_carrier'])].head(10)
-                defense_players = frame_group[frame_group['is_on_defense']].head(11)
+                offense = frame_group[(frame_group['is_on_offense']) & (~frame_group['is_ballcarrier'])]
+                defense = frame_group[frame_group['is_on_defence']]
                 ballcarrier = frame_group[frame_group['is_ballcarrier']]
                 ballcarrier_sx = ballcarrier.s * np.cos(np.deg2rad(ballcarrier.dir))
                 ballcarrier_sy = ballcarrier.s * np.sin(np.deg2rad(ballcarrier.dir))
-                for i, def_player in enumerate(defense_players.itertuples()):
+                for i, def_player in enumerate(defense.itertuples()):
                     def_player_sx = def_player.s * np.cos(np.deg2rad(def_player.dir))
                     def_player_sy = def_player.s * np.sin(np.deg2rad(def_player.dir))
-                    for j, off_player in enumerate(offense_players.itertuples()):
+                    for j, off_player in enumerate(offense.itertuples()):
                         off_player_sx = off_player.s * np.cos(np.deg2rad(off_player.dir))
                         off_player_sy = off_player.s * np.sin(np.deg2rad(off_player.dir))
                         input_tensor[cur_count, 0, i, j] = off_player.x - def_player.x
@@ -115,10 +117,16 @@ def create_feature_tensor(feature_df):
                         input_tensor[cur_count, 7, i, j] = def_player.y - ballcarrier.y
                         input_tensor[cur_count, 8, i, j] = off_player_sx - def_player_sx
                         input_tensor[cur_count, 9, i, j] = off_player_sy - def_player_sy
-                        target_tensor[cur_count] = def_player.yards_remaining
-                        reference_tensor[cur_count, 0] = gid
+                        yards_remaining = ball_end_x.iloc[0] - ballcarrier.x
+                        target_tensor[cur_count] = yards_remaining
+                        reference_tensor[cur_count, 0] = game_id
                         reference_tensor[cur_count, 1] = play_id
                         reference_tensor[cur_count, 2] = frame_id
+                        positional_reference_tensor[cur_count, i, j, 0] = def_player.nflId
+                        positional_reference_tensor[cur_count, i, j, 1] = off_player.nflId
+                        positional_reference_tensor[cur_count, i, j, 2] = game_id
+                        positional_reference_tensor[cur_count, i, j, 3] = play_id
+                        positional_reference_tensor[cur_count, i, j, 4] = frame_id
+                        # positional_reference_tensor[cur_count, i, j, 5] = yards_remaining
                 cur_count += 1
-
-    return input_tensor, target_tensor, reference_tensor
+    return input_tensor, target_tensor, reference_tensor, positional_reference_tensor

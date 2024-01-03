@@ -41,13 +41,16 @@ class MatchupAttention(nn.Module):
         x_out = self.matchups(x_compress).unsqueeze(1)
         attention = F.sigmoid(x_out)
 
-        return x * attention
+        return x * attention, attention
 
 
 # Define the PyTorch model
 class ExpectedYardsModel(nn.Module):
     def __init__(self):
         super().__init__()
+
+        self.return_attention = False
+
         self.conv2d_1 = nn.Conv2d(in_channels=10, out_channels=128, kernel_size=(1, 1))
         self.conv2d_2 = nn.Conv2d(in_channels=128, out_channels=160, kernel_size=(1, 1))
         self.conv2d_3 = nn.Conv2d(in_channels=160, out_channels=128, kernel_size=(1, 1))
@@ -82,17 +85,17 @@ class ExpectedYardsModel(nn.Module):
         # Conv2D and Activation layers
         x = F.relu(self.conv2d_1(x))
         x = self.se_1(x)
-        x = self.ma_1(x)
+        x, a1 = self.ma_1(x)
         x = self.dropout(x)
         x = F.relu(self.conv2d_2(x))
         x = self.se_2(x)
-        x = self.ma_2(x)
+        x, a2 = self.ma_2(x)
         x = self.dropout(x)
         x = F.relu(self.conv2d_3(x))
         x = self.se_3(x)
-        x = self.ma_3(x)
+        x, a3 = self.ma_3(x)
         x = self.dropout(x)
-        
+
         # MaxPooling2D and AvgPool2D layers
         xmax = F.max_pool2d(x, (1, 10)) * 0.3
         xavg = F.avg_pool2d(x, (1, 10)) * 0.7
@@ -128,12 +131,18 @@ class ExpectedYardsModel(nn.Module):
         x = self.dense_3(x)
         x = torch.squeeze(x, 1)
 
+        if self.return_attention:
+            return x, a1, a2, a3
+        
         return x
+
+        
 
 
 def load_expected_yards_model():
     model = ExpectedYardsModel()
     model.load_state_dict(torch.load('./model_e10_new.pt'))
+    model.eval()
     return model
 
 
