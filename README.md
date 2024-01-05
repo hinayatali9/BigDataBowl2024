@@ -8,7 +8,7 @@ Daniel Hocevar, Computer Science Undergraduate Student | [Linkedin](https://www.
 
 Aaron White, Statistics Undergraduate Student | [Linkedin](https://www.linkedin.com/in/whiteaaron/)
 
-Jaden Madjumdar, Engineering Science Undergraduate Student | [Linkedin](https://www.linkedin.com/in/jaden-majumdar-179a31263/?originalSubdomain=ca)
+Jaden Majumdar, Engineering Science Undergraduate Student | [Linkedin](https://www.linkedin.com/in/jaden-majumdar-179a31263/?originalSubdomain=ca)
 
 ### Submission for the 2024 NFL Big Data Bowl - Undergraduate Track
 
