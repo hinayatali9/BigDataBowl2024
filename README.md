@@ -21,3 +21,7 @@ Our Code directory contains all code applied to complete our NFL Big Data Bowl P
 ### Figures
 
 Our Figures directory contains all images used in our Kaggle submission for the 2024 NFL Big Data Bowl.
+
+### Appendix
+
+Our Appendix directory contains Appendix A, referenced in our 2024 NFL Big Data Bowl submission.
