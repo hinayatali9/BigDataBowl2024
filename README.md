@@ -6,7 +6,7 @@ Hassaan Inayatali, Engineering Science Undergraduate Student | [Linkedin](https:
 
 Daniel Hocevar, Computer Science Undergraduate Student | [Linkedin](https://www.linkedin.com/in/danielhocevar/)
 
-Aaron White, Statistics Undergraduate Student | [Linkedin](https://www.linkedin.com/in/whiteaaron/)
+Aaron White, Statistics Undergraduate Student | [Linkedin](https://www.linkedin.com/in/aaronwhite03/)
 
 Jaden Majumdar, Engineering Science Undergraduate Student | [Linkedin](https://www.linkedin.com/in/jaden-majumdar-179a31263/?originalSubdomain=ca)
 
