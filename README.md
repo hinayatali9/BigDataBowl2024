@@ -34,3 +34,5 @@ J. Hu, L. Shen, S. Albanie, G. Sun, and E. Wu, “Squeeze-and-excitation network
 
 S. Woo, J. Park, J.-Y. Lee, and I. S. Kweon, “CBAM: Convolutional Block Attention Module,” arXiv.org, https://arxiv.org/abs/1807.06521v2 (accessed Jan. 6, 2024). 
 
+Michael Lopez, Thompson Bliss, Ally Blake, Andrew Patton, Jonathan McWilliams, Addison Howard, Will Cukierski. (2023). NFL Big Data Bowl 2024. Kaggle. https://kaggle.com/competitions/nfl-big-data-bowl-2024
+
