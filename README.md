@@ -28,4 +28,12 @@ Our Appendix directory contains Appendix A, referenced in our 2024 NFL Big Data 
 
 ## Bibliography
 
+P. Singer and D. Gordeev, “NFL Big Data Bowl,” Kaggle, https://www.kaggle.com/c/nfl-big-data-bowl-2020/ (accessed Jan. 6, 2024). 
+
+J. Hu, L. Shen, S. Albanie, G. Sun, and E. Wu, “Squeeze-and-excitation networks,” arXiv.org, https://arxiv.org/abs/1709.01507v4 (accessed Jan. 6, 2024). 
+
+S. Woo, J. Park, J.-Y. Lee, and I. S. Kweon, “CBAM: Convolutional Block Attention Module,” arXiv.org, https://arxiv.org/abs/1807.06521v2 (accessed Jan. 6, 2024). 
+
+## Bibliography
+
 
