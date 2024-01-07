@@ -18,6 +18,8 @@ Jaden Majumdar, Engineering Science Undergraduate Student | [Linkedin](https://w
 
 Our Code directory contains all code applied to complete our NFL Big Data Bowl Project.
 
+To reproduce the results from our project from scratch, begin by running `train_model.ipynb`.
+
 ### Figures
 
 Our Figures directory contains all images used in our Kaggle submission for the 2024 NFL Big Data Bowl.
