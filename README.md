@@ -18,7 +18,7 @@ Jaden Majumdar, Engineering Science Undergraduate Student | [Linkedin](https://w
 
 Our Code directory contains all code applied to complete our NFL Big Data Bowl Project.
 
-To reproduce the results from our project from scratch, begin by running `train_model.ipynb`.
+To reproduce the results from our project from scratch, run `train_model.ipynb`.
 
 ### Figures
 
