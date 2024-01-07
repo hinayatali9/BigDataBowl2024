@@ -26,7 +26,7 @@ Our Figures directory contains all images used in our Kaggle submission for the 
 
 ### Appendix
 
-Our Appendix directory contains Appendix A, referenced in our 2024 NFL Big Data Bowl submission.
+Our Appendix directory contains the model features, referenced in our 2024 NFL Big Data Bowl submission.
 
 ## Bibliography
 
