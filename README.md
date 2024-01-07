@@ -1,4 +1,4 @@
-# Where'd He Go? A Positional Evaluation of Tackling
+# Every Step You Take: Measuring A Defender's Moves
 
 ### University of Toronto Sports Analytics Student Group
 
